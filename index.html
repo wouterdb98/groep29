@@ -131,7 +131,11 @@ canvas {
 
 <script>
 
-const MIJN_GROEP = 29;
+
+const params = new URLSearchParams(window.location.search);
+
+const MIJN_GROEP =
+    Number(params.get("groep"))
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbxxL0uDwSGfhMTyVnu_hNEPd3zB8pXrl-Ml_W4FRqjX6u2pyk6QQAwLPiboNuAt_Ng/exec";
