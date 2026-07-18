@@ -175,6 +175,15 @@ fetch(API_URL + "?groep=" + MIJN_GROEP)
                 scales: {
 
                     x: {
+                        title: {
+                            display: true,
+                            text: "Groepnummer",
+                            color: "white",
+                            font: {
+                                size: 16,
+                                weight: "bold"
+                            }
+                        },
                         ticks: {
                             color: "white"
                         },
@@ -186,7 +195,15 @@ fetch(API_URL + "?groep=" + MIJN_GROEP)
 
                     y: {
                         beginAtZero: true,
-
+                        title: {
+                            display: true,
+                            text: "Aantal volgers",
+                            color: "white",
+                            font: {
+                                size: 16,
+                                weight: "bold"
+                            }
+                        },
                         ticks: {
                             color: "white"
                         },
