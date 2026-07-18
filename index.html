@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Groepen Dashboard</title>
+
+.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1e3c72,
+            #2a5298
+        );
+
+    color: white;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    flex: 1;
+
+    min-width: 150px;
+
+    text-align: center;
+
+    background: rgba(255,255,255,0.15);
+
+    border-radius: 12px;
+
+    padding: 15px;
+}
+
+.stat h2 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+canvas {
+    width: 100%;
+    max-height: 500px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 id="titel">Dashboard laden...</h1>
+
+    <div class="card">
+        <canvas id="grafiek"></canvas>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <h2 id="volgers">...</h2>
+            <p>Volgers</p>
+        </div>
+
+        <div class="stat">
+            <h2 id="positie">...</h2>
+            <p>Positie</p>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const MIJN_GROEP = 29;
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbxxL0uDwSGfhMTyVnu_hNEPd3zB8pXrl-Ml_W4FRqjX6u2pyk6QQAwLPiboNuAt_Ng/exec";
+
+fetch(API_URL + "?groep=" + MIJN_GROEP)
+
+.then(response => response.json())
+
+.then(data => {
+
+    document.getElementById("titel").textContent =
+        data.leeftijd + " - Groep " + data.groep;
+
+    document.getElementById("volgers").textContent =
+        data.volgers;
+
+    document.getElementById("positie").textContent =
+        "#" + data.positie;
+
+    const labels =
+        data.groepen.map(x => x.groep);
+
+    const volgers =
+        data.groepen.map(x => x.volgers);
+
+    const kleuren =
+        labels.map(g =>
+            g == MIJN_GROEP
+                ? "#FFD700"
+                : "rgba(255,255,255,0.6)"
+        );
+
+    new Chart(
+        document.getElementById("grafiek"),
+        {
+            type: "bar",
+
+            data: {
+                labels: labels,
+
+                datasets: [{
+                    label: "Volgers",
+
+                    data: volgers,
+
+                    backgroundColor: kleuren,
+
+                    borderRadius: 6
+                }]
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+                        ticks: {
+                            color: "white"
+                        },
+
+                        grid: {
+                            display: false
+                        }
+                    },
+
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            color: "white"
+                        },
+
+                        grid: {
+                            color: "rgba(255,255,255,0.15)"
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+})
+
+.catch(error => {
+
+    document.getElementById("titel").textContent =
+        "Fout bij laden";
+
+    console.error(error);
+
+});
+
+</script>
+
+</body>
+</html>
